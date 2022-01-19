@@ -145,13 +145,16 @@ function fetch($url, $data){
 // =================================================================================
 
 // Start scanning the whole page from the wp_head wordpress hook
-add_action('wp_head', function(){
+function header_hook(){
     ob_start();
-});
+}
+
+add_action('wp_head', 'header_hook');
+add_action('amp_post_template_head', 'header_hook');
 
 // Stop scanning the page from the wp_footer hook and store its
 // value into $content
-add_action('wp_footer', function ($callback){
+function footer_hook ($callback){
 
     $content = ob_get_clean();
 
@@ -310,4 +313,7 @@ add_action('wp_footer', function ($callback){
     </script>';
     exit();
 
-});
+}
+
+add_action('wp_footer', 'footer_hook');
+add_action('amp_post_template_footer', 'footer_hook');
